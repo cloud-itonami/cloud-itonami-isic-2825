@@ -1,0 +1,41 @@
+{:itonami.blueprint/id "cloud-itonami-isic-2825"
+ :itonami.blueprint/name "Manufacture of machinery for food, beverage and tobacco processing"
+ :itonami.blueprint/isic-rev5 "2825"
+ :itonami.blueprint/domain :food-beverage-tobacco-machinery/manufacturing
+ :itonami.blueprint/license "AGPL-3.0-or-later"
+ :itonami.blueprint/social-impact [:worker-safety :mechanical-safety :food-contact-material-compliance]
+ :itonami.blueprint/governor :food-beverage-tobacco-machinery-plant-operations-governor
+ :itonami.blueprint/robotics true
+ :itonami.blueprint/required-technologies [:robotics :identity :forms :dmn :bpmn :audit-ledger :eda :cae]
+ :itonami.blueprint/status :public-oss
+ :itonami.blueprint/maturity :implemented
+ :itonami.blueprint/implemented-slice
+ "FoodMachAdvisor ⊣ Food, Beverage and Tobacco Machinery Plant
+ Operations Governor, langgraph-clj StateGraph, append-only audit
+ ledger. A plant OPERATIONS COORDINATION actor for food/beverage/
+ tobacco processing-machinery manufacturing (mixing-equipment and
+ packaging-equipment assembly and test lines producing finished
+ industrial mixers, filling machines, packaging machines, bottling
+ lines and tobacco processing machines) -- not direct assembly/
+ test-bench-equipment control authority and not machinery or
+ food-contact-material safety-certification authority (e.g. CE
+ marking under the EU Machinery Regulation, or food-contact-material
+ compliance under EU Regulation 1935/2004 / FDA 21 CFR 178 / NSF/ANSI
+ 169). Four ops (`:log-production-batch` / `:schedule-maintenance` /
+ `:flag-safety-concern` / `:coordinate-shipment`), all `:effect
+ :propose` only. Twelve concrete governor checks elaborate this
+ blueprint's four HARD invariants: propose-only effect, closed op
+ allowlist, closed proposal-effect allowlist (no direct assembly/
+ test-bench-equipment control), permanent equipment-actuate block,
+ permanent safety-certification-authority block (this actor never
+ self-issues a machinery or food-contact-material compliance
+ certification mark), independent equipment verification/registration
+ before maintenance scheduling, independent batch verification/
+ registration before shipment coordination, independent shipment-
+ quantity recompute against the batch's own logged production
+ quantity, double-schedule guard, product-type validation, no-load-
+ run-speed plausibility validation, and defect-rate plausibility
+ validation. Safety-concern flagging (mechanical-safety/food-contact-
+ material-compliance concern) ALWAYS escalates to a human plant
+ supervisor; `:log-production-batch` is the only op eligible to
+ auto-commit, and only at phase 3 when governor-clean."}
