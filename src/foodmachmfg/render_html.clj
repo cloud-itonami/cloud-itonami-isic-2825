@@ -33,8 +33,7 @@
 
   Usage: `clojure -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
-  (:require [jp-go-dds.skin]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [foodmachmfg.governor :as governor]
             [foodmachmfg.operation :as op]
@@ -188,11 +187,6 @@
   [step]
   (:by (last (audit-facts step :approval-granted))))
 
-(defn- step-rules
-  "The governor rules this step tripped, in the governor's own order."
-  [step]
-  (mapv :rule (:violations (last (audit-facts step :governor-hold)))))
-
 (defn- step-outcome [step]
   (let [d (get-in step [:state :disposition])]
     (cond
@@ -257,6 +251,25 @@
        :auto-phases (vec (filter #(contains? (:auto (phase/phases %)) op) ps))})))
 
 ;; ----------------------------- html -----------------------------
+
+(def ^:private css-resource "foodmachmfg/console.css")
+
+(defn- console-css
+  "The vendored デジタル庁デザインシステム stylesheet (tokens + the
+  operator-console skin), read off the classpath so the build needs no
+  network -- see `dev/vendor_console_css.clj`.
+
+  Throws rather than returning \"\" when the resource is missing: an
+  unstyled console still renders every fact correctly and would sail
+  through a tag-balance or determinism check, so a missing stylesheet
+  must fail the build loudly instead of degrading into a page that looks
+  finished."
+  []
+  (if-let [r (io/resource css-resource)]
+    (slurp r :encoding "UTF-8")
+    (throw (ex-info (str "missing vendored stylesheet on the classpath: " css-resource
+                         " -- regenerate it with `clojure -M:vendor-css`")
+                    {:resource css-resource}))))
 
 (defn- esc [v]
   (-> (str v)
@@ -494,7 +507,7 @@
      "<html lang=\"en\"><head><meta charset=\"utf-8\">\n"
      "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
      "<title>cloud-itonami-isic-2825 · food/beverage/tobacco processing machinery — Operator Console</title>\n"
-     "<style>" (jp-go-dds.skin/dds+skin) "</style></head><body>\n"
+     "<style>" (console-css) "</style></head><body>\n"
      "<header class=\"bar\">\n"
      "  <h1>Manufacture of machinery for food, beverage and tobacco processing (ISIC 2825) — Operator Console</h1>\n"
      "  <span class=\"badge\">read-only sample · governor-gated · every write proposal only · "
