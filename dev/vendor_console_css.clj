@@ -32,7 +32,7 @@
   Usage (only when refreshing the vendored copy):
     clojure -M:vendor-css"
   (:require [clojure.java.io :as io]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [jp-go-dds.skin]))
 
 (def ^:private out-path "resources/foodmachmfg/console.css")
