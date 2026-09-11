@@ -142,7 +142,7 @@
                " *            component classes are dropped -- the console emits no\n"
                " *            `.dads-*` class, so they cannot match. Token layer,\n"
                " *            element rules and skin are kept verbatim.\n"
-               " * Regenerate: clojure -M:vendor-css  (see dev/vendor_console_css.clj)\n"
+               " * Regenerate: clojure -M:vendor-css  (see dev/vendor_console_css.cljk)\n"
                " */\n")
           :encoding "UTF-8")
     (spit out-path kept :append true :encoding "UTF-8")

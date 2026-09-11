@@ -257,7 +257,7 @@
 (defn- console-css
   "The vendored デジタル庁デザインシステム stylesheet (tokens + the
   operator-console skin), read off the classpath so the build needs no
-  network -- see `dev/vendor_console_css.clj`.
+  network -- see `dev/vendor_console_css.cljk`.
 
   Throws rather than returning \"\" when the resource is missing: an
   unstyled console still renders every fact correctly and would sail
