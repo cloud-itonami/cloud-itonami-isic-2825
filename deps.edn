@@ -1,6 +1,6 @@
 {;; `resources` carries the vendored operator-console stylesheet
  ;; (resources/foodmachmfg/console.css). It is checked in rather than
- ;; resolved as a dependency so `clojure -M:dev:render-html` emits the
+ ;; resolved as a dependency so `kbb -M:dev:render-html` emits the
  ;; same bytes with no network and no populated ~/.gitlibs -- see
  ;; dev/vendor_console_css.cljk for how it is regenerated.
  :paths ["src" "resources"]
@@ -10,7 +10,7 @@
  ;; standalone (forkable outside the workspace); the :local/root paths
  ;; only resolve inside the monorepo checkout -- a standalone fork
  ;; should override them with git coordinates. langchain is pinned here
- ;; directly (not only under :dev) so a bare `clojure -M:test` works
+ ;; directly (not only under :dev) so a bare `kbb -M:test` works
  ;; offline inside the monorepo checkout without depending on
  ;; langgraph's own transitive git/sha pin being fetchable.
  :deps {
@@ -29,14 +29,14 @@
   :dev {:override-deps
         {io.github.kotoba-lang/langchain
          {:local/root "../../kotoba-lang/langchain"}}}
-  ;; clojure -M:dev:run  -> drive the demo through one OperationActor
+  ;; kbb -M:dev:run  -> drive the demo through one OperationActor
   :run {:main-opts ["-m" "foodmachmfg.sim"]}
-  ;; clojure -M:dev:render-html [out-file] -> regenerate
+  ;; kbb -M:dev:render-html [out-file] -> regenerate
   ;; docs/samples/operator-console.html by running the REAL actor
   ;; (flagship checklist item 2). Fails rather than writes if the
   ;; scenario stops producing HARD governor holds.
   :render-html {:main-opts ["-m" "foodmachmfg.render-html"]}
-  ;; clojure -M:vendor-css -> refresh resources/foodmachmfg/console.css
+  ;; kbb -M:vendor-css -> refresh resources/foodmachmfg/console.css
   ;; from the sibling jp-go-dds checkout. NOT needed to build the
   ;; console: the normal render reads the checked-in resource, so it
   ;; stays offline. Only run when picking up an upstream skin change.
