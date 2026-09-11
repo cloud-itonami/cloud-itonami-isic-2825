@@ -8,7 +8,7 @@
  *            component classes are dropped -- the console emits no
  *            `.dads-*` class, so they cannot match. Token layer,
  *            element rules and skin are kept verbatim.
- * Regenerate: clojure -M:vendor-css  (see dev/vendor_console_css.cljk)
+ * Regenerate: kbb -M:vendor-css  (see dev/vendor_console_css.cljk)
  */
 /* jp-go-digital-design-system — vendored CSS
  * Source: https://github.com/digital-go-jp/design-system-example-components-html

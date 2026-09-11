@@ -5,7 +5,7 @@
   generated demo page at all. This namespace drives the REAL actor
   stack -- `foodmachmfg.operation` (a langgraph-clj StateGraph) ->
   `foodmachmfg.governor` -> `foodmachmfg.store` -- exactly the way
-  `foodmachmfg.sim` does (`clojure -M:dev:run`, run and read BEFORE
+  `foodmachmfg.sim` does (`kbb -M:dev:run`, run and read BEFORE
   this file was written), and renders what that run actually produced.
 
   EVERY id, quantity, product type, hold rule and hold detail on the
@@ -31,7 +31,7 @@
   future change lets a permanently-blocked proposal through, this
   generator fails instead of quietly emitting a page with no blocks.
 
-  Usage: `clojure -M:dev:render-html [out-file]`
+  Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
   (:require [clojure.java.io :as io]
             [kotoba.lang.text :as str]
@@ -268,7 +268,7 @@
   (if-let [r (io/resource css-resource)]
     (slurp r :encoding "UTF-8")
     (throw (ex-info (str "missing vendored stylesheet on the classpath: " css-resource
-                         " -- regenerate it with `clojure -M:vendor-css`")
+                         " -- regenerate it with `kbb -M:vendor-css`")
                     {:resource css-resource}))))
 
 (defn- esc [v]
@@ -517,7 +517,7 @@
      "  <section class=\"card\">\n"
      "    <h2>What this page is</h2>\n"
      "    <p>Generated at build time by <code>foodmachmfg.render-html</code> "
-     "(<code>clojure -M:dev:render-html</code>) by running the real actor — "
+     "(<code>kbb -M:dev:render-html</code>) by running the real actor — "
      "<code>foodmachmfg.operation</code> (a langgraph-clj StateGraph) → "
      "<code>foodmachmfg.governor</code> → <code>foodmachmfg.store</code> — over the seeded plant "
      "in <code>foodmachmfg.store/sample-data!</code>. Every id, quantity and hold reason below was "
@@ -538,7 +538,7 @@
      "</main>\n"
      "<footer>\n"
      "  <p>cloud-itonami-isic-2825 · AGPL-3.0-or-later · regenerate with "
-     "<code>clojure -M:dev:render-html</code>. Deterministic: no timestamps, no randomness — "
+     "<code>kbb -M:dev:render-html</code>. Deterministic: no timestamps, no randomness — "
      "two consecutive runs are byte-identical.</p>\n"
      "</footer>\n"
      "</body></html>\n")))

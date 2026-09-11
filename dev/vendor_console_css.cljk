@@ -6,7 +6,7 @@
   WHY THIS IS VENDORED RATHER THAN A DEPENDENCY.
   `docs/samples/operator-console.html` must be reproducible offline: the
   console is a build artifact whose determinism check compares whole
-  files, and `clojure -M:dev:render-html` has to emit the same bytes on a
+  files, and `kbb -M:dev:render-html` has to emit the same bytes on a
   machine with no network and no populated `~/.gitlibs`. A `:git/sha`
   dependency on jp-go-digital-design-system would make the CSS — and so
   the artifact — resolvable only when git coordinates can be fetched.
@@ -30,7 +30,7 @@
   defines, or if any selector the console actually relies on went missing.
 
   Usage (only when refreshing the vendored copy):
-    clojure -M:vendor-css"
+    kbb -M:vendor-css"
   (:require [clojure.java.io :as io]
             [kotoba.lang.text :as str]
             [jp-go-dds.skin]))
@@ -142,7 +142,7 @@
                " *            component classes are dropped -- the console emits no\n"
                " *            `.dads-*` class, so they cannot match. Token layer,\n"
                " *            element rules and skin are kept verbatim.\n"
-               " * Regenerate: clojure -M:vendor-css  (see dev/vendor_console_css.cljk)\n"
+               " * Regenerate: kbb -M:vendor-css  (see dev/vendor_console_css.cljk)\n"
                " */\n")
           :encoding "UTF-8")
     (spit out-path kept :append true :encoding "UTF-8")
