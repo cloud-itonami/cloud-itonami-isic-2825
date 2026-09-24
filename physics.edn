@@ -1,0 +1,45 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README: an ISIC 2825 plant assembles and tests industrial mixers, filling
+;; machines, packaging machines and bottling lines (robotics authority: full,
+;; HARD-gated, human sign-off on every actuation -- docs/business-model.md).
+;; The physical work around that plant: an assembly arm seating drive
+;; components onto a machine frame, incoming inspection of the stainless bar
+;; the frames are built from, and an AMR tugger moving crated machine modules
+;; from the test bench to the shipping dock.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-2825"
+ :cases
+ [{:id :seat-gearmotor-on-frame
+   :kind :manipulator
+   :procedure "assembly arm lifts a gearmotor from the kitting cart and seats it on a mixer frame's drive plate"
+   :params {:l1-m 0.60 :l2-m 0.50 :m1-kg 9.0 :m2-kg 6.0
+            :from [0.70 0.05] :to [0.35 0.60] :duration-s 3.0 :steps 500}
+   :sweep {:param :payload-kg :values [3.0 6.0 10.0 15.0 20.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 250.0 :basis "estimate: continuous shoulder torque of a ~20 kg-payload industrial arm class"}
+   :boundary {:lo 0.5 :hi 60.0}}
+  {:id :frame-bar-incoming-tensile
+   :kind :material
+   :procedure "incoming inspection: tensile test of a 304 stainless bar specimen (8 mm dia., 50.3 mm2) from the lot used for machine frames"
+   :params {:length-m 0.05 :area-m2 5.03e-5 :youngs-modulus-pa 193.0e9 :hardening-pa 2.0e9
+            :density-kg-m3 8000.0 :max-force-n 20000.0}
+   :sweep {:param :yield-stress-pa :values [170.0e6 190.0e6 205.0e6 230.0e6 280.0e6]}
+   :quantity :yield-force-n
+   :limit {:min 10311.5 :basis "ASTM A240 / A276 type 304: minimum yield strength 205 MPa (30 ksi); x 50.3 mm2 = 10311.5 N"}
+   :boundary {:lo 150.0e6 :hi 300.0e6}}
+  {:id :crated-module-to-dock
+   :kind :transport
+   :procedure "AMR tugger moves a crated filling-machine module from the test bench to the shipping dock (90 m)"
+   :params {:mass-kg 350.0 :distance-m 90.0 :v-max-mps 1.2 :a-max-mps2 0.4
+            :brake-decel-mps2 0.6 :drive-force-n 600.0 :crr 0.015
+            :cog-height-m 0.40 :support-half-length-m 0.45 :payload-cog-height-m 0.90
+            :max-time-s 1800.0}
+   :sweep {:param :payload-kg :values [100.0 250.0 500.0 800.0 1200.0]}
+   :quantity :cycle-time-s
+   :limit {:max 110.0 :basis "estimate: one dock run inside a 2-minute takt for loading a truck bay"}
+   :boundary {:lo 50.0 :hi 5000.0}}]}
