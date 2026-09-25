@@ -16,5 +16,5 @@
         ;; kotoba.io carries clojure.java.io's file/as-file/as-relative-path/
         ;; make-parents/delete-file from 98045c7, and tools.deps takes the NEWEST
         ;; sha it is shown.
-        io.github.kotoba-lang/io {:git/sha "98045c7ad26c71c3505cb8fefdcbe0dcdf98f925"}
+        io.github.kotoba-lang/io {:git/sha "72dde04b4c32854d70d17a670b277f8f7957a784"}
         io.github.kotoba-lang/edn {:git/sha "79dba32c8892058842c57783f06a2dfe4601aeb0"}}}
